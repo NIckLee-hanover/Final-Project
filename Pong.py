@@ -38,8 +38,10 @@ class Pong(App):
         super().__init__()
         bg_main = RectangleAsset(self.width, self.height, noline, black)
         bg_center =  RectangleAsset(20, self.height-100, noline, white)
+        bg_top = RectangleAsset(self.width, 20, noline, white)
         bg = Sprite(bg_main, (0,0))
         bg = Sprite(bg_center, (self.width/2, 100))
+        bg = Sprite(bg_top, (0, 100))
 
 
 
