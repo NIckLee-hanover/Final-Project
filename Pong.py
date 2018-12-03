@@ -10,7 +10,7 @@ Write and submit a program that implements the sandbox platformer game:
 https://github.com/HHS-IntroProgramming/Platformer
 """
 from ggame import App, Color, LineStyle, Sprite, RectangleAsset, CircleAsset, EllipseAsset, PolygonAsset, ImageAsset, Frame
-
+from random import randint
 blue = Color(0x2EFEC8, 1.0)
 black = Color(0x000000, 1.0)
 pink = Color(0xFF00FF, 1.0)
@@ -33,6 +33,17 @@ greenline = LineStyle(1, green)
 gridline = LineStyle(1, grey)
 grid=RectangleAsset(30,30,gridline,white)
 
+class Ball(Sprite):
+    b = CircleAsset(20, noline, white)
+    def __init__(self, posistion):
+        super().__init__(Ball.b, posistion)
+
+
+
+
+
+
+
 class Pong(App):
     def __init__(self):
         super().__init__()
@@ -42,7 +53,7 @@ class Pong(App):
         bg = Sprite(bg_main, (0,0))
         bg = Sprite(bg_center, (self.width/2, 100))
         bg = Sprite(bg_top, (0, 100))
-
+    Ball((100,200))
 
 
 
