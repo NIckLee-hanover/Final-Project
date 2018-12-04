@@ -34,10 +34,10 @@ gridline = LineStyle(1, grey)
 grid=RectangleAsset(30,30,gridline,white)
 
 class Ball(Sprite):
-    b = CircleAsset(20, noline, white)
+    b = RectangleAsset(12, 12, noline, white)
     def __init__(self, posistion):
         super().__init__(Ball.b, posistion)
-
+        
 
 
 
@@ -48,12 +48,20 @@ class Pong(App):
     def __init__(self):
         super().__init__()
         bg_main = RectangleAsset(self.width, self.height, noline, black)
-        bg_center =  RectangleAsset(20, self.height-100, noline, white)
+        bg_center =  RectangleAsset(10, round(self.height/40), noline, white)
         bg_top = RectangleAsset(self.width, 20, noline, white)
         bg = Sprite(bg_main, (0,0))
-        bg = Sprite(bg_center, (self.width/2, 100))
-        bg = Sprite(bg_top, (0, 100))
-    Ball((100,200))
+        #bg = Sprite(bg_top, (0, 100))
+        print(round(self.height/20))
+        for i in range(round(self.height/20)):
+            bg = Sprite(bg_center, (self.width/2, i*40))
+        #bg = Sprite(bg_center, (self.width/2, 100))
+
+        Pong.listenKeyEvent("keydown", "space", self.placeball)
+    
+    
+    def placeball(self, event):
+        Ball((self.width/2, randint(100, self.height)))
 
 
 
