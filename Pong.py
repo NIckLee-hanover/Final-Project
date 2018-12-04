@@ -38,9 +38,29 @@ class Ball(Sprite):
     def __init__(self, posistion):
         super().__init__(Ball.b, posistion)
         
+class Numbers(Sprite):
+    n = ImageAsset("Final-Project/images/numbers.png",
+        Frame(0,0,20,50), 9, 'horizontal')
+    def __init__(self, posistion):
+        super().__init__(Numbers.n, posistion)
+        self.change = 0
+        self.number = 0
+        Pong.listenKeyEvent("keydown", "o", self.newnum)
+        Pong.listenKeyEvent("keyup", "o", self.oldnum)
+    
+    def step(self):
+        if self.change == 1:
+            print(self.number)
+            self.setImage(self.number)
+            self.number += 1
+            if self.number == 9:
+                self.number = 0
 
-
-
+    
+    def newnum(self, event):
+        self.change = 1
+    def oldnum(self, event):
+        self.change = 0
 
 
 
@@ -51,20 +71,18 @@ class Pong(App):
         bg_center =  RectangleAsset(10, round(self.height/40), noline, white)
         bg_top = RectangleAsset(self.width, 20, noline, white)
         bg = Sprite(bg_main, (0,0))
-        #bg = Sprite(bg_top, (0, 100))
-        print(round(self.height/20))
+        Numbers((100,100))
+
         for i in range(round(self.height/20)):
-            bg = Sprite(bg_center, (self.width/2, i*40))
-        #bg = Sprite(bg_center, (self.width/2, 100))
+            bg = Sprite(bg_center, (self.width/2-5, i*35))
 
         Pong.listenKeyEvent("keydown", "space", self.placeball)
     
-    
     def placeball(self, event):
         Ball((self.width/2, randint(100, self.height)))
-
-
-
+    def step(self):
+        for n in self.getSpritesbyClass(Numbers):
+            n.step()
 
 
 
