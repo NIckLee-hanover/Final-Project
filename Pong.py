@@ -34,7 +34,7 @@ gridline = LineStyle(1, grey)
 grid=RectangleAsset(30,30,gridline,white)
 
 class Ball(Sprite):
-    b = RectangleAsset(12, 12, noline, white)
+    b = RectangleAsset(10, 10, noline, white)
     def __init__(self, posistion):
         super().__init__(Ball.b, posistion)
         
@@ -67,10 +67,12 @@ class Numbers(Sprite):
 class Pong(App):
     def __init__(self):
         super().__init__()
+
         bg_main = RectangleAsset(self.width, self.height, noline, black)
         bg_center =  RectangleAsset(10, round(self.height/40), noline, white)
         bg_top = RectangleAsset(self.width, 20, noline, white)
         bg = Sprite(bg_main, (0,0))
+
         Numbers((100,100))
 
         for i in range(round(self.height/20)):
@@ -79,7 +81,7 @@ class Pong(App):
         Pong.listenKeyEvent("keydown", "space", self.placeball)
     
     def placeball(self, event):
-        Ball((self.width/2, randint(100, self.height)))
+        Ball((self.width/2-5, randint(100, self.height)))
     def step(self):
         for n in self.getSpritesbyClass(Numbers):
             n.step()
