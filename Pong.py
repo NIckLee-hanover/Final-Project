@@ -39,7 +39,7 @@ class Ball(Sprite):
         super().__init__(Ball.b, posistion)
         
 class Numbers(Sprite):
-    n = ImageAsset("images/numbers2.png",
+    n = ImageAsset("images/numbers4.png",
     Frame(0,0,50,68), 9, 'horizontal')
     def __init__(self, posistion):
         super().__init__(Numbers.n, posistion)
@@ -54,10 +54,10 @@ class Numbers(Sprite):
         if self.change == 1:
             self.setImage(self.number)
             self.number += 1
-            if self.number == 9:
+            if self.number == 10:
                 self.number = 0
         else:
-            self.setImage(7)
+            self.setImage(10)
 
     
     def newnum(self, event):
