@@ -31,7 +31,7 @@ blueline = LineStyle(2, blue)
 redline = LineStyle(1, red)
 greenline = LineStyle(1, green)
 gridline = LineStyle(1, grey)
-grid=RectangleAsset(30,30,gridline,white)
+grid = RectangleAsset(30,30,gridline,white)
 
 class Ball(Sprite):
     b = RectangleAsset(10, 10, noline, white)
@@ -40,34 +40,29 @@ class Ball(Sprite):
         
 class Numbers(Sprite):
     n = ImageAsset("images/numbers4.png",
-    Frame(0,0,50,68), 9, 'horizontal')
+    Frame(0,0,50,68), 11, 'horizontal')
     def __init__(self, posistion):
         super().__init__(Numbers.n, posistion)
+        pscore = 0
         self.change = 0
-        self.number = 8
-        Pong.listenKeyEvent("keydown", "o", self.newnum)
-        Pong.listenKeyEvent("keyup", "o", self.oldnum)
+        self.number = 9
+        Pong.listenKeyEvent("keyup", "o", self.oldnum)#
         self.fxcenter = self.fycenter = 0.5
     
-    def step(self):
-        print(self.number, self.width, self.height)
-        if self.change == 1:
-            self.setImage(self.number)
-            self.number += 1
-            if self.number == 10:
-                self.number = 0
-        else:
-            self.setImage(10)
+    def step(self, num):
+        self.setImage(num)
+        if Pong.pscore == 10:
+            Pong.pscore = 0
 
-    
-    def newnum(self, event):
-        self.change = 1 
     def oldnum(self, event):
         self.change = 0
+        Pong.pscore += 1
+        print(Pong.pscore)
 
 
 
 class Pong(App):
+    pscore = 0
     def __init__(self):
         super().__init__()
 
@@ -86,7 +81,8 @@ class Pong(App):
         Ball((self.width/2-5, randint(100, self.height)))
     def step(self):
         for n in self.getSpritesbyClass(Numbers):
-            n.step()
+            n.step(self.pscore)
+            
 
 
 
