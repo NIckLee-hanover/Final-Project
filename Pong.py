@@ -34,35 +34,62 @@ gridline = LineStyle(1, grey)
 grid = RectangleAsset(30,30,gridline,white)
 
 class Ball(Sprite):
-    b = RectangleAsset(10, 10, noline, white)
+    b = RectangleAsset(20, 20, noline, white)
     def __init__(self, posistion):
         super().__init__(Ball.b, posistion)
+        if round(randint(0,1)) == 1:
+            self.vx = 4
+        else:
+            self.vx = -4
+        if round(randint(0,1)) == 1:
+            self.vy = 3
+        else:
+            self.vy = -3
+        
+    def step(self):
+        self.x += self.vx
+        self.y += self.vy
+        
+        if self.y < 0 or self.y > Pong.height-20:
+            self.vy *= -1
+        if self.x < 0 or self.x > Pong.width-20:
+            self.vx *= -1
+        
         
 class Numbers(Sprite):
     n = ImageAsset("images/numbers4.png",
     Frame(0,0,50,68), 11, 'horizontal')
     def __init__(self, posistion):
         super().__init__(Numbers.n, posistion)
-        pscore = 0
+        p1s = 0
         self.change = 0
-        self.number = 9
+        self.setImage(8)
         Pong.listenKeyEvent("keyup", "o", self.oldnum)#
+        Pong.listenKeyEvent("keyup", "i", self.newnum)
         self.fxcenter = self.fycenter = 0.5
     
     def step(self, num):
         self.setImage(num)
-        if Pong.pscore == 10:
-            Pong.pscore = 0
+        if Pong.p1s == 10:
+            Pong.p1s = 0
+        if Pong.p2s == 10:
+            Pong.p2s = 0
 
     def oldnum(self, event):
-        self.change = 0
-        Pong.pscore += 1
-        print(Pong.pscore)
-
-
+        Pong.p1s += 1
+        print(Pong.p1s)
+        
+    def newnum(self, event):
+        Pong.p2s += 1
+        
+class Leftnum(Numbers):
+    def step(self, num):
+        self.setImage(num)
 
 class Pong(App):
-    pscore = 0
+    p1s = 8
+    p2s = 8
+    ballalive = 0
     def __init__(self):
         super().__init__()
 
@@ -70,20 +97,26 @@ class Pong(App):
         bg_center =  RectangleAsset(10, round(self.height/40), noline, white)
         bg_top = RectangleAsset(self.width, 20, noline, white)
         bg = Sprite(bg_main, (0,0))
-        Numbers((400,200))
-
+        Numbers((self.width/2-100, 100))
+        Leftnum((self.width/2+100, 100))
         for i in range(round(self.height/20)):
             bg = Sprite(bg_center, (self.width/2-5, i*35))
 
         Pong.listenKeyEvent("keydown", "space", self.placeball)
     
     def placeball(self, event):
-        Ball((self.width/2-5, randint(100, self.height)))
+        if self.ballalive == 0:
+            Ball((self.width/2-5, randint(100, self.height-75)))
+        self.ballalive = 1
+        
     def step(self):
         for n in self.getSpritesbyClass(Numbers):
-            n.step(self.pscore)
+            n.step(self.p1s)
+        for n in self.getSpritesbyClass(Leftnum):
+            n.step(self.p2s)
+        for b in self.getSpritesbyClass(Ball):
+            b.step()
             
-
 
 
 
