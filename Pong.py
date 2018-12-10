@@ -117,6 +117,7 @@ class Pong(App):
             n.step(self.p2s)
         for b in self.getSpritesbyClass(Ball):
             b.step()
+        #print(int(Timer))
             
 
 
