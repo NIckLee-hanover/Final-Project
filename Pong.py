@@ -9,6 +9,7 @@ Assignment:
 Write and submit a program that implements the sandbox platformer game:
 https://github.com/HHS-IntroProgramming/Platformer
 """
+from ggame.timer import Timer
 from ggame import App, Color, LineStyle, Sprite, RectangleAsset, CircleAsset, EllipseAsset, PolygonAsset, ImageAsset, Frame
 from random import randint
 blue = Color(0x2EFEC8, 1.0)
@@ -94,7 +95,7 @@ class Pong(App):
         super().__init__()
 
         bg_main = RectangleAsset(self.width, self.height, noline, black)
-        bg_center =  RectangleAsset(10, round(self.height/40), noline, white)
+        bg_center =  RectangleAsset(5, round(self.height/40), noline, white)
         bg_top = RectangleAsset(self.width, 20, noline, white)
         bg = Sprite(bg_main, (0,0))
         Numbers((self.width/2-100, 100))
