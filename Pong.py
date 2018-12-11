@@ -55,12 +55,12 @@ class Ball(Sprite):
             self.vy *= -1
         if self.x < 0:
             Pong.p2s += 1
-            Pong.ballalive = 0
-            self.x = Pong.width/2
+            del Pong.balll[0]
+            self.destroy()
         elif self.x > Pong.width-20:
             Pong.p1s += 1
-            Pong.ballalive = 0 
-            self.x = Pong.width/2
+            del Pong.balll[0]
+            self.destroy()
         
         
 class Numbers(Sprite):
@@ -96,6 +96,7 @@ class Leftnum(Numbers):
 class Pong(App):
     p1s = 8
     p2s = 8
+    balll = []
     ballalive = 0
     drawball = 0
     def __init__(self):
@@ -113,21 +114,18 @@ class Pong(App):
         Pong.listenKeyEvent("keydown", "space", self.placeball)
     
     def placeball(self, event):
-        if self.ballalive == 0:
-            Ball((self.width/2-5, randint(100, self.height-75)))
-        self.ballalive = 1
+        if len(self.balll) == 0:
+            self.balll.append(Ball((self.width/2-5, randint(100, self.height-75))))
         
     def step(self):
         for n in self.getSpritesbyClass(Numbers):
             n.step(self.p1s)
         for n in self.getSpritesbyClass(Leftnum):
             n.step(self.p2s)
-        if self.ballalive == 1:
-            print(self.ballalive, self.p1s)
-            for b in self.getSpritesbyClass(Ball):
-                b.step()
-        #print(int(Timer))
-            
+        if len(self.balll) == 1:
+            for i in self.balll:
+                i.step()
+
 
 
 
