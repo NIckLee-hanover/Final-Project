@@ -53,8 +53,14 @@ class Ball(Sprite):
         
         if self.y < 0 or self.y > Pong.height-20:
             self.vy *= -1
-        if self.x < 0 or self.x > Pong.width-20:
-            self.vx *= -1
+        if self.x < 0:
+            Pong.p2s += 1
+            Pong.ballalive = 0
+            self.x = Pong.width/2
+        elif self.x > Pong.width-20:
+            Pong.p1s += 1
+            Pong.ballalive = 0 
+            self.x = Pong.width/2
         
         
 class Numbers(Sprite):
@@ -91,6 +97,7 @@ class Pong(App):
     p1s = 8
     p2s = 8
     ballalive = 0
+    drawball = 0
     def __init__(self):
         super().__init__()
 
@@ -115,8 +122,10 @@ class Pong(App):
             n.step(self.p1s)
         for n in self.getSpritesbyClass(Leftnum):
             n.step(self.p2s)
-        for b in self.getSpritesbyClass(Ball):
-            b.step()
+        if self.ballalive == 1:
+            print(self.ballalive, self.p1s)
+            for b in self.getSpritesbyClass(Ball):
+                b.step()
         #print(int(Timer))
             
 
