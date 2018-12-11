@@ -3,9 +3,9 @@
 lines 4-33 copied from lvl 3 for ease.
 
 Pong.py
-Author: 
+Author: Nick Lee
 Credit: 
-Assignment:
+Assignment: Final Project
 Write and submit a program that implements the sandbox platformer game:
 https://github.com/HHS-IntroProgramming/Platformer
 """
