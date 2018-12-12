@@ -4,13 +4,14 @@ lines 4-33 copied from lvl 3 for ease.
 
 Pong.py
 Author: Nick Lee
-Credit: 
+Credit: some level 3 snippets for sound, sprite documentation and things
 Assignment: Final Project
 Write and submit a program that implements the sandbox platformer game:
 https://github.com/HHS-IntroProgramming/Platformer
 """
 from ggame.timer import Timer
-from ggame import App, Color, LineStyle, Sprite, RectangleAsset, CircleAsset, EllipseAsset, PolygonAsset, ImageAsset, Frame
+from ggame import (App, Color, LineStyle, Sprite, RectangleAsset,
+    CircleAsset, EllipseAsset, PolygonAsset, ImageAsset, SoundAsset, Sound, Frame)
 from random import randint
 blue = Color(0x2EFEC8, 1.0)
 black = Color(0x000000, 1.0)
@@ -35,9 +36,12 @@ gridline = LineStyle(1, grey)
 grid = RectangleAsset(30,30,gridline,white)
 
 class Ball(Sprite):
+    popasset = SoundAsset("sounds/pop.mp3")
     b = RectangleAsset(20, 20, noline, white)
     def __init__(self, posistion):
         super().__init__(Ball.b, posistion)
+        self.pop = Sound(self.popasset)
+        self.pop.volume = 10
         if round(randint(0,1)) == 1:
             self.vx = 4
         else:
@@ -60,6 +64,7 @@ class Ball(Sprite):
         elif self.x > Pong.width-20:
             Pong.p1s += 1
             del Pong.balll[0]
+            self.pop.play()
             self.destroy()
         
         
