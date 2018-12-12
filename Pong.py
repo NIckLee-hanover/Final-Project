@@ -42,10 +42,12 @@ class Ball(Sprite):
         super().__init__(Ball.b, posistion)
         self.pop = Sound(self.popasset)
         self.pop.volume = 10
+        
         if round(randint(0,1)) == 1:
             self.vx = 4
         else:
             self.vx = -4
+            
         if round(randint(0,1)) == 1:
             self.vy = 3
         else:
@@ -57,15 +59,23 @@ class Ball(Sprite):
         
         if self.y < 0 or self.y > Pong.height-20:
             self.vy *= -1
+            
         if self.x < 0:
             Pong.p2s += 1
             del Pong.balll[0]
             self.destroy()
+            
         elif self.x > Pong.width-20:
             Pong.p1s += 1
             del Pong.balll[0]
             self.pop.play()
             self.destroy()
+            
+        self.pcollide = self.collidingWithSprites(Paddle)
+        if len(self.pcollide):
+            self.vx = (self.vx + randint(-1,1))*-1
+            self.vy = randint(-3,3)
+            
         
         
 class Numbers(Sprite):
@@ -110,21 +120,20 @@ class Paddle(Sprite):
 
     def press(self,event):
         if event.key == "up arrow":
-            self.vy = 3
+            self.vy = -5
         elif event.key == "down arrow":
-            self.vy = -3
+            self.vy = 5
+
     def stop(self, event):
         self.vy = 0
+
     def step(self):
         self.y += self.vy
         if self.y > Pong.height-20:
             self.vy = 0
         elif self.y < 0:
             self.vy = 0
-            
-        
-        
-        
+
 class Pong(App):
     p1s = 8
     p2s = 8
@@ -140,7 +149,7 @@ class Pong(App):
         bg = Sprite(bg_main, (0,0))
         Numbers((self.width/2-100, 100))
         Leftnum((self.width/2+100, 100))
-        paddle((100,100))
+        Paddle((100,100))
         for i in range(round(self.height/20)):
             bg = Sprite(bg_center, (self.width/2-5, i*35))
 
@@ -153,10 +162,13 @@ class Pong(App):
     def step(self):
         for n in self.getSpritesbyClass(Numbers):
             n.step(self.p1s)
+            
         for n in self.getSpritesbyClass(Leftnum):
             n.step(self.p2s)
+            
         for p in self.getSpritesbyClass(Paddle):
             p.step()
+            
         if len(self.balll) == 1:
             for i in self.balll:
                 i.step()
