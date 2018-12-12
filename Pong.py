@@ -98,6 +98,33 @@ class Leftnum(Numbers):
     def step(self, num):
         self.setImage(num)
 
+class Paddle(Sprite):
+    p = RectangleAsset(10, 20, noline, white)
+    def __init__(self, posistion):
+        super().__init__(Paddle.p, posistion)
+        self.vy = 0
+        Pong.listenKeyEvent("keydown", "up arrow", self.press)
+        Pong.listenKeyEvent("keydown", "down arrow", self.press)
+        Pong.listenKeyEvent("keyup", "up arrow", self.stop)
+        Pong.listenKeyEvent("keyup", "down arrow", self.stop)
+
+    def press(self,event):
+        if event.key == "up arrow":
+            self.vy = 3
+        elif event.key == "down arrow":
+            self.vy = -3
+    def stop(self, event):
+        self.vy = 0
+    def step(self):
+        self.y += self.vy
+        if self.y > Pong.height-20:
+            self.vy = 0
+        elif self.y < 0:
+            self.vy = 0
+            
+        
+        
+        
 class Pong(App):
     p1s = 8
     p2s = 8
@@ -113,6 +140,7 @@ class Pong(App):
         bg = Sprite(bg_main, (0,0))
         Numbers((self.width/2-100, 100))
         Leftnum((self.width/2+100, 100))
+        paddle((100,100))
         for i in range(round(self.height/20)):
             bg = Sprite(bg_center, (self.width/2-5, i*35))
 
@@ -127,6 +155,8 @@ class Pong(App):
             n.step(self.p1s)
         for n in self.getSpritesbyClass(Leftnum):
             n.step(self.p2s)
+        for p in self.getSpritesbyClass(Paddle):
+            p.step()
         if len(self.balll) == 1:
             for i in self.balll:
                 i.step()
