@@ -133,6 +133,7 @@ class Paddle(Sprite):
         
     def stop(self, event):
         self.vy = 0
+        self.vy2 = 0
 
     def step(self):
         self.y += self.vy
@@ -142,16 +143,16 @@ class Paddle(Sprite):
             self.vy = 0
 
 class RightPaddle(Paddle):
-    
+    '''
     def press(self, event):
         print('1')
         if event.key == "w":
             self.vy = -3
         if event.key == "s":
             self.vy = 3
-            
+            '''
     def step(self):
-        self.y += self.vy
+        self.y += self.vy2
         print('a')
 
 class Pong(App):
