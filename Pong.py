@@ -34,6 +34,7 @@ redline = LineStyle(1, red)
 greenline = LineStyle(1, green)
 gridline = LineStyle(1, grey)
 grid = RectangleAsset(30,30,gridline,white)
+keys = ["w", "s", "up arrow", "down arrow"]
 
 class Ball(Sprite):
     b = RectangleAsset(20, 20, noline, white)
@@ -112,48 +113,57 @@ class Paddle(Sprite):
         super().__init__(Paddle.p, posistion)
         self.vy = 0
         self.vy2 = 0
-        Pong.listenKeyEvent("keydown", "up arrow", self.press)
-        Pong.listenKeyEvent("keydown", "down arrow", self.press)
-        Pong.listenKeyEvent("keydown", "w", self.press)
-        Pong.listenKeyEvent("keydown", "s", self.press)
+        for i in keys:
+            Pong.listenKeyEvent("keydown", i, self.press)
+            Pong.listenKeyEvent("keyup", i, self.stop)
+        '''
+        Pong.listenKeyEvent("keydown", "up arrow", self.up)
+        Pong.listenKeyEvent("keydown", "down arrow", self.down)
+        Pong.listenKeyEvent("keydown", "w", self.up2)
+        Pong.listenKeyEvent("keydown", "s", self.down2)
         Pong.listenKeyEvent("keyup", "up arrow", self.stop)
         Pong.listenKeyEvent("keyup", "down arrow", self.stop)
         Pong.listenKeyEvent("keyup", "w", self.stop)
         Pong.listenKeyEvent("keyup", "s", self.stop)
+        '''
     def press(self,event):
         if event.key == "up arrow":
-            self.vy = -5
-        elif event.key == "down arrow":
-            self.vy = 5
-        
-        elif event.key == "w":
             self.vy2 = -5
-        elif event.key == "s":
+        elif event.key == "down arrow":
             self.vy2 = 5
-        
+        elif event.key == "w":
+            self.vy = -5
+        elif event.key == "s":
+            self.vy = 5
+    def press2(self, event):
+        pass
+
     def stop(self, event):
-        self.vy = 0
-        self.vy2 = 0
+        if event.key == "up arrow":
+            self.vy = 0
+        elif event.key == "down arrow":
+            self.vy = 0
+        else:
+            self.vy2 = 0
 
     def step(self):
         self.y += self.vy
         if self.y > Pong.height-20:
-            self.vy = 0
+            self.vy *= -1
         elif self.y < 0:
-            self.vy = 0
+            self.vy *= -1
 
 class RightPaddle(Paddle):
-    '''
-    def press(self, event):
+    
+    def press2(self, event):
         print('1')
         if event.key == "w":
-            self.vy = -3
+            self.vy2 = -3
         if event.key == "s":
-            self.vy = 3
-            '''
+            self.vy2 = 3
+            
     def step(self):
         self.y += self.vy2
-        print('a')
 
 class Pong(App):
     p1s = 8
