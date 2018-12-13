@@ -36,12 +36,11 @@ gridline = LineStyle(1, grey)
 grid = RectangleAsset(30,30,gridline,white)
 
 class Ball(Sprite):
-    popasset = SoundAsset("sounds/pop.mp3")
     b = RectangleAsset(20, 20, noline, white)
     def __init__(self, posistion):
         super().__init__(Ball.b, posistion)
+        self.popasset = SoundAsset("sounds/pop1.mp3")
         self.pop = Sound(self.popasset)
-        self.pop.volume = 10
         
         if round(randint(0,1)) == 1:
             self.vx = 4
@@ -62,22 +61,21 @@ class Ball(Sprite):
             
         if self.x < 0:
             Pong.p2s += 1
+            self.pop.play()
             del Pong.balll[0]
             self.destroy()
             
         elif self.x > Pong.width-20:
             Pong.p1s += 1
-            del Pong.balll[0]
             self.pop.play()
+            del Pong.balll[0]
             self.destroy()
             
         self.pcollide = self.collidingWithSprites(Paddle)
         if len(self.pcollide):
             self.vx = (self.vx + randint(-1,1))*-1
             self.vy = randint(-3,3)
-            
-        
-        
+
 class Numbers(Sprite):
     n = ImageAsset("images/numbers4.png",
     Frame(0,0,50,68), 11, 'horizontal')
@@ -113,17 +111,26 @@ class Paddle(Sprite):
     def __init__(self, posistion):
         super().__init__(Paddle.p, posistion)
         self.vy = 0
+        self.vy2 = 0
         Pong.listenKeyEvent("keydown", "up arrow", self.press)
         Pong.listenKeyEvent("keydown", "down arrow", self.press)
+        Pong.listenKeyEvent("keydown", "w", self.press)
+        Pong.listenKeyEvent("keydown", "s", self.press)
         Pong.listenKeyEvent("keyup", "up arrow", self.stop)
         Pong.listenKeyEvent("keyup", "down arrow", self.stop)
-
+        Pong.listenKeyEvent("keyup", "w", self.stop)
+        Pong.listenKeyEvent("keyup", "s", self.stop)
     def press(self,event):
         if event.key == "up arrow":
             self.vy = -5
         elif event.key == "down arrow":
             self.vy = 5
-
+        
+        elif event.key == "w":
+            self.vy2 = -5
+        elif event.key == "s":
+            self.vy2 = 5
+        
     def stop(self, event):
         self.vy = 0
 
@@ -133,6 +140,19 @@ class Paddle(Sprite):
             self.vy = 0
         elif self.y < 0:
             self.vy = 0
+
+class RightPaddle(Paddle):
+    
+    def press(self, event):
+        print('1')
+        if event.key == "w":
+            self.vy = -3
+        if event.key == "s":
+            self.vy = 3
+            
+    def step(self):
+        self.y += self.vy
+        print('a')
 
 class Pong(App):
     p1s = 8
@@ -149,7 +169,8 @@ class Pong(App):
         bg = Sprite(bg_main, (0,0))
         Numbers((self.width/2-100, 100))
         Leftnum((self.width/2+100, 100))
-        Paddle((100,100))
+        Paddle((50,self.height/2))
+        RightPaddle((600,self.height/2))
         for i in range(round(self.height/20)):
             bg = Sprite(bg_center, (self.width/2-5, i*35))
 
@@ -167,6 +188,9 @@ class Pong(App):
             n.step(self.p2s)
             
         for p in self.getSpritesbyClass(Paddle):
+            p.step()
+        
+        for p in self.getSpritesbyClass(RightPaddle):
             p.step()
             
         if len(self.balll) == 1:
