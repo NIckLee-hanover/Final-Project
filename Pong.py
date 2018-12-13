@@ -52,7 +52,11 @@ class Ball(Sprite):
             self.vy = 3
         else:
             self.vy = -3
-        
+    def paddled(self, event):
+        if len(self.pcollide):
+            self.pop.play()
+            self.vx = (self.vx*-1 + randint(0,0.2))
+            self.vy = randint(-3,3)
     def step(self):
         self.x += self.vx
         self.y += self.vy
@@ -62,21 +66,27 @@ class Ball(Sprite):
             
         if self.x < 0:
             Pong.p2s += 1
-            self.pop.play()
             del Pong.balll[0]
             self.destroy()
             
         elif self.x > Pong.width-20:
             Pong.p1s += 1
-            self.pop.play()
             del Pong.balll[0]
             self.destroy()
             
         self.pcollide = self.collidingWithSprites(Paddle)
+        
         if len(self.pcollide):
+            self.pop.play()
             self.vx = (self.vx + randint(-1,1))*-1
             self.vy = randint(-3,3)
-
+            
+        self.pcollide = self.collidingWithSprites(RightPaddle)
+        if len(self.pcollide):
+            self.pop.play()
+            self.vx = (self.vx + randint(-1,1))*-1
+            self.vy = randint(-3,3)
+            
 class Numbers(Sprite):
     n = ImageAsset("images/numbers4.png",
     Frame(0,0,50,68), 11, 'horizontal')
@@ -85,7 +95,7 @@ class Numbers(Sprite):
         p1s = 0
         self.change = 0
         self.setImage(8)
-        Pong.listenKeyEvent("keyup", "o", self.oldnum)#
+        Pong.listenKeyEvent("keyup", "o", self.oldnum)
         Pong.listenKeyEvent("keyup", "i", self.newnum)
         self.fxcenter = self.fycenter = 0.5
     
@@ -98,8 +108,7 @@ class Numbers(Sprite):
 
     def oldnum(self, event):
         Pong.p1s += 1
-        print(Pong.p1s)
-        
+
     def newnum(self, event):
         Pong.p2s += 1
         
@@ -116,16 +125,7 @@ class Paddle(Sprite):
         for i in keys:
             Pong.listenKeyEvent("keydown", i, self.press)
             Pong.listenKeyEvent("keyup", i, self.stop)
-        '''
-        Pong.listenKeyEvent("keydown", "up arrow", self.up)
-        Pong.listenKeyEvent("keydown", "down arrow", self.down)
-        Pong.listenKeyEvent("keydown", "w", self.up2)
-        Pong.listenKeyEvent("keydown", "s", self.down2)
-        Pong.listenKeyEvent("keyup", "up arrow", self.stop)
-        Pong.listenKeyEvent("keyup", "down arrow", self.stop)
-        Pong.listenKeyEvent("keyup", "w", self.stop)
-        Pong.listenKeyEvent("keyup", "s", self.stop)
-        '''
+            
     def press(self,event):
         if event.key == "up arrow":
             self.vy2 = -5
@@ -140,11 +140,11 @@ class Paddle(Sprite):
 
     def stop(self, event):
         if event.key == "up arrow":
-            self.vy = 0
-        elif event.key == "down arrow":
-            self.vy = 0
-        else:
             self.vy2 = 0
+        elif event.key == "down arrow":
+            self.vy2 = 0
+        else:
+            self.vy = 0
 
     def step(self):
         self.y += self.vy
@@ -181,7 +181,7 @@ class Pong(App):
         Numbers((self.width/2-100, 100))
         Leftnum((self.width/2+100, 100))
         Paddle((50,self.height/2))
-        RightPaddle((600,self.height/2))
+        RightPaddle((900,self.height/2))
         for i in range(round(self.height/20)):
             bg = Sprite(bg_center, (self.width/2-5, i*35))
 
