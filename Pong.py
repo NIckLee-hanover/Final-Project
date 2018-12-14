@@ -166,8 +166,8 @@ class RightPaddle(Paddle):
         self.y += self.vy2
 
 class Pong(App):
-    p1s = 2
-    p2s = 2
+    p1s = 8
+    p2s = 8
     balll = []
     ballalive = 0
     drawball = 0
@@ -203,13 +203,14 @@ class Pong(App):
         
         for p in self.getSpritesbyClass(RightPaddle):
             p.step()
-            
-        for b in self.getSpritesbyClass(Ball):
-            b.step()
-            
+        
         #if len(self.balll) == 1:
-         #   for b in self.balll:
+         #   for b in self.getSpritesbyClass(Ball):
           #      b.step()
+            
+        if len(self.balll) == 1:
+            for b in self.balll:
+                b.step()
 
 
 
