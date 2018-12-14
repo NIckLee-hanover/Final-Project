@@ -52,19 +52,14 @@ class Ball(Sprite):
             self.vy = 3
         else:
             self.vy = -3
-    '''
-    def paddled(self, event):
-        if len(self.pcollide):
-            self.pop.play()
-            print('a')
-            self.vx = (self.vx*-1 + randint(0,0.2))
-            self.vy = randint(-3,3)
-            '''
+
     def step(self):
         self.x += self.vx
         self.y += self.vy
         
-        if self.y < 0 or self.y > Pong.height-20:
+        if self.y < 0:
+            self.y = 1
+        or self.y > Pong.height-20:
             self.vy *= -1
             
         if self.x < 0:
@@ -137,8 +132,6 @@ class Paddle(Sprite):
             self.vy = -5
         elif event.key == "s":
             self.vy = 5
-    def press2(self, event):
-        pass
 
     def stop(self, event):
         if event.key == "up arrow":
@@ -156,14 +149,7 @@ class Paddle(Sprite):
             self.vy *= -1
 
 class RightPaddle(Paddle):
-    
-    def press2(self, event):
-        print('1')
-        if event.key == "w":
-            self.vy2 = -3
-        if event.key == "s":
-            self.vy2 = 3
-            
+
     def step(self):
         self.y += self.vy2
 
@@ -173,7 +159,6 @@ class Pong(App):
     balll = []
     def __init__(self):
         super().__init__()
-
         bg_main = RectangleAsset(self.width, self.height, noline, black)
         bg_center =  RectangleAsset(5, round(self.height/40), noline, white)
         bg_top = RectangleAsset(self.width, 20, noline, white)
@@ -207,12 +192,6 @@ class Pong(App):
         if len(self.balll) == 1:
             for b in self.balll:
                 b.step()
-
-
-
-
-
-
 
 myApp = Pong()
 myApp.run()
