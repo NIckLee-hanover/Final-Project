@@ -52,11 +52,14 @@ class Ball(Sprite):
             self.vy = 3
         else:
             self.vy = -3
+    '''
     def paddled(self, event):
         if len(self.pcollide):
             self.pop.play()
+            print('a')
             self.vx = (self.vx*-1 + randint(0,0.2))
             self.vy = randint(-3,3)
+            '''
     def step(self):
         self.x += self.vx
         self.y += self.vy
@@ -75,7 +78,6 @@ class Ball(Sprite):
             self.destroy()
             
         self.pcollide = self.collidingWithSprites(Paddle)
-        
         if len(self.pcollide):
             self.pop.play()
             self.vx = (self.vx*-1 + randint(0,0.2))
@@ -169,8 +171,6 @@ class Pong(App):
     p1s = 8
     p2s = 8
     balll = []
-    ballalive = 0
-    drawball = 0
     def __init__(self):
         super().__init__()
 
@@ -203,11 +203,7 @@ class Pong(App):
         
         for p in self.getSpritesbyClass(RightPaddle):
             p.step()
-        
-        #if len(self.balll) == 1:
-         #   for b in self.getSpritesbyClass(Ball):
-          #      b.step()
-            
+
         if len(self.balll) == 1:
             for b in self.balll:
                 b.step()
