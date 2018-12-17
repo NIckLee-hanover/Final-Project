@@ -57,9 +57,9 @@ class Ball(Sprite):
         self.x += self.vx
         self.y += self.vy
         
-        if self.y < 0:
-            self.y = 1
-        or self.y > Pong.height-20:
+        if self.y < 1:
+            self.vy *= -1
+        elif self.y > Pong.height-20:
             self.vy *= -1
             
         if self.x < 0:
@@ -190,7 +190,7 @@ class Pong(App):
             p.step()
 
         if len(self.balll) == 1:
-            for b in self.balll:
+            for b in self.getSpritesbyClass(Ball):
                 b.step()
 
 myApp = Pong()
