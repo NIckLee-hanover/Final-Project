@@ -40,7 +40,7 @@ class Ball(Sprite):
     b = RectangleAsset(20, 20, noline, white)
     def __init__(self, posistion):
         super().__init__(Ball.b, posistion)
-        self.pointasset = SoundAsset("sounds/coin.mp3")
+        self.pointasset = SoundAsset("sounds/point1.mp3")
         self.popasset = SoundAsset("sounds/pop1.mp3")
         self.pop = Sound(self.popasset)
         self.point = Sound(self.pointasset)
@@ -78,13 +78,13 @@ class Ball(Sprite):
         self.pcollide = self.collidingWithSprites(Paddle)
         if len(self.pcollide):
             self.pop.play()
-            self.vx = (self.vx*-1 + randint(0,0.2))
+            self.vx = (abs(self.vx)+randint(0,0.2))
             self.vy = randint(-3,3)
             
         self.pcollide = self.collidingWithSprites(RightPaddle)
         if len(self.pcollide):
             self.pop.play()
-            self.vx = (self.vx*-1 - randint(0,0.2))
+            self.vx = (abs(self.vx)+randint(0,0.2)*-1)
             self.vy = randint(-3,3)
             
 class Numbers(Sprite):
@@ -147,14 +147,18 @@ class Paddle(Sprite):
     def step(self):
         self.y += self.vy
         if self.y > Pong.height-20:
-            self.vy *= -1
+            self.y = Pong.height-20
         elif self.y < 0:
-            self.vy *= -1
+            self.y = 0
 
 class RightPaddle(Paddle):
 
     def step(self):
         self.y += self.vy2
+        if self.y > Pong.height-20:
+            self.y = Pong.height-20
+        elif self.y < 0:
+            self.y = 0
 
 class Pong(App):
     p1s = 8
