@@ -40,8 +40,10 @@ class Ball(Sprite):
     b = RectangleAsset(20, 20, noline, white)
     def __init__(self, posistion):
         super().__init__(Ball.b, posistion)
+        self.pointasset = SoundAsset("sounds/coin.mp3")
         self.popasset = SoundAsset("sounds/pop1.mp3")
         self.pop = Sound(self.popasset)
+        self.point = Sound(self.pointasset)
         
         if round(randint(0,1)) == 1:
             self.vx = 4
@@ -64,11 +66,12 @@ class Ball(Sprite):
             
         if self.x < 0:
             Pong.p2s += 1
+            self.point.play()
             del Pong.balll[0]
             self.destroy()
-            
         elif self.x > Pong.width-20:
             Pong.p1s += 1
+            self.point.play()
             del Pong.balll[0]
             self.destroy()
             
