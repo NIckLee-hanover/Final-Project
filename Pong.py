@@ -161,7 +161,8 @@ class RightPaddle(Paddle):
             self.y = 0
 
 class StartScreen(Sprite):
-    s = ImageAsset("play.png")
+    s = ImageAsset("images/play.png")
+    s.scale = 0.2
     def __init__(self, posistion):
         super().__init__(StartScreen.s, posistion)
         self.flash = 0
@@ -172,7 +173,7 @@ class StartScreen(Sprite):
         print(self.on)
         if self.flash == 30:
             if self.on == 0:
-                self.y = 100
+                self.y = 150
                 self.x = Pong.width/2
                 self.on = 1
             else:
