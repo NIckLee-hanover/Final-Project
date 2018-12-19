@@ -79,13 +79,13 @@ class Ball(Sprite):
         self.pcollide = self.collidingWithSprites(Paddle)
         if len(self.pcollide):
             self.pop.play()
-            self.vx = (abs(self.vx)+randint(0,0.2))
+            self.vx = (abs(self.vx)+0.5)
             self.vy = randint(-3,3)
             
         self.pcollide = self.collidingWithSprites(RightPaddle)
         if len(self.pcollide):
             self.pop.play()
-            self.vx = ((abs(self.vx)+randint(0,0.2))*-1)
+            self.vx = ((abs(self.vx)+0.5)*-1)
             self.vy = randint(-3,3)
             
 class Numbers(Sprite):
