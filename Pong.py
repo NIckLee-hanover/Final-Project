@@ -56,6 +56,7 @@ class Ball(Sprite):
             self.vy = -3
 
     def step(self):
+        print(self.vx)
         self.x += self.vx
         self.y += self.vy
         
@@ -84,7 +85,7 @@ class Ball(Sprite):
         self.pcollide = self.collidingWithSprites(RightPaddle)
         if len(self.pcollide):
             self.pop.play()
-            self.vx = (abs(self.vx)+randint(0,0.2)*-1)
+            self.vx = ((abs(self.vx)+randint(0,0.2))*-1)
             self.vy = randint(-3,3)
             
 class Numbers(Sprite):
