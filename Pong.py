@@ -56,7 +56,6 @@ class Ball(Sprite):
             self.vy = -3
 
     def step(self):
-        print(self.vx)
         self.x += self.vx
         self.y += self.vy
         
@@ -161,7 +160,32 @@ class RightPaddle(Paddle):
         elif self.y < 0:
             self.y = 0
 
+class StartScreen(Sprite):
+    s = ImageAsset("play.png")
+    def __init__(self, posistion):
+        super().__init__(StartScreen.s, posistion)
+        self.flash = 0
+        self.on = 0
+        self.fxcenter = self.fycenter = 0.5
+
+    def step(self):
+        print(self.on)
+        if self.flash == 30:
+            if self.on == 0:
+                self.y = 100
+                self.x = Pong.width/2
+                self.on = 1
+            else:
+                self.y = -100
+                self. on = 0
+
+            self.flash = 0
+        self.flash += 1
+        
+
+
 class Pong(App):
+    
     p1s = 8
     p2s = 8
     balll = []
@@ -173,6 +197,7 @@ class Pong(App):
         bg = Sprite(bg_main, (0,0))
         Numbers((self.width/2-100, 100))
         Leftnum((self.width/2+100, 100))
+        StartScreen((self.width/2, 100))
         Paddle((50,self.height/2))
         RightPaddle((900,self.height/2))
         for i in range(round(self.height/20)):
@@ -196,6 +221,9 @@ class Pong(App):
         
         for p in self.getSpritesbyClass(RightPaddle):
             p.step()
+        
+        for s in self.getSpritesbyClass(StartScreen):
+            s.step()
 
         if len(self.balll) == 1:
             for b in self.getSpritesbyClass(Ball):
