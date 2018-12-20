@@ -166,7 +166,6 @@ class RightPaddle(Paddle):
 
 class StartScreen(Sprite):
     s = ImageAsset("images/play.png")
-    r = ImageAsset("images/again.png")
     def __init__(self, posistion):
         super().__init__(StartScreen.s, posistion)
         self.flash = 0
@@ -174,10 +173,12 @@ class StartScreen(Sprite):
         self.s2 = 0
         self.fxcenter = self.fycenter = 0.5
 
+
     def step(self):
         if Pong.screen != self.s2:
             self.y = -100
-        if self.flash == 35:
+
+        elif self.flash == 35:
             if self.on == 0:
                 self.y = 200
                 self.x = Pong.width/2
@@ -188,14 +189,19 @@ class StartScreen(Sprite):
 
             self.flash = 0
         self.flash += 1
+        
 
 class Serve(StartScreen):
-    
+    s2 = 2
+    s = ImageAsset("images/again.png")
+    #pass
+    '''
     def __init__(self, posistion):
         super().__init__(StartScreen.r, posistion)
         #self.flash = 0
-        self.on = 0
+        #self.on = 0
         self.s2 = 2
+        '''
 '''
     def step(self):
         print(self.y)
@@ -255,7 +261,9 @@ class Pong(App):
         
         for p in self.getSpritesbyClass(RightPaddle):
             p.step()
+        
         for s in self.getSpritesbyClass(Serve):
+            s.scale = 0.6
             s.step()
             
         for s in self.getSpritesbyClass(StartScreen):
