@@ -66,11 +66,13 @@ class Ball(Sprite):
             
         if self.x < 0:
             Pong.p2s += 1
+            Pong.screen = 2
             self.point.play()
             del Pong.balll[0]
             self.destroy()
         elif self.x > Pong.width-20:
             Pong.p1s += 1
+            Pong.screen = 2
             self.point.play()
             del Pong.balll[0]
             self.destroy()
@@ -86,6 +88,9 @@ class Ball(Sprite):
             self.pop.play()
             self.vx = ((abs(self.vx)+0.5)*-1)
             self.vy = randint(-3,3)
+        
+        if len(Pong.balll) == 1:
+            Pong.screen = 1
             
 class Numbers(Sprite):
     n = ImageAsset("images/numbers4.png",
@@ -152,7 +157,6 @@ class Paddle(Sprite):
             self.y = 0
 
 class RightPaddle(Paddle):
-
     def step(self):
         self.y += self.vy2
         if self.y > Pong.height-20:
@@ -162,7 +166,6 @@ class RightPaddle(Paddle):
 
 class StartScreen(Sprite):
     s = ImageAsset("images/play.png")
-    s.scale = 0.2
     def __init__(self, posistion):
         super().__init__(StartScreen.s, posistion)
         self.flash = 0
@@ -170,10 +173,11 @@ class StartScreen(Sprite):
         self.fxcenter = self.fycenter = 0.5
 
     def step(self):
-        print(self.on)
-        if self.flash == 30:
+        if Pong.screen != 0:
+            self.y = -100
+        if self.flash == 35:
             if self.on == 0:
-                self.y = 150
+                self.y = 200
                 self.x = Pong.width/2
                 self.on = 1
             else:
@@ -182,11 +186,37 @@ class StartScreen(Sprite):
 
             self.flash = 0
         self.flash += 1
-        
+
+class Serve(Sprite):
+    s = ImageAsset("images/again.png")
+    def __init__(self, posistion):
+        super().__init__(Serve.s, posistion)
+        self.flash = 0
+        self.on = 0
+        self.fxcenter = self.fycenter = 0.5
+
+    def step(self):
+        print(self.y)
+        if Pong.screen != 2:
+            print(Pong.screen)
+            self.y = -100
+        elif self.flash == 35:
+            print('a')
+            if self.on == 0:
+                self.y = 200
+                self.x = Pong.width/2
+                self.on = 1
+            else:
+                self.y = -100
+                self. on = 0
+
+            self.flash = 0
+        self.flash += 1
+
 
 
 class Pong(App):
-    
+    screen = 0
     p1s = 8
     p2s = 8
     balll = []
@@ -198,7 +228,8 @@ class Pong(App):
         bg = Sprite(bg_main, (0,0))
         Numbers((self.width/2-100, 100))
         Leftnum((self.width/2+100, 100))
-        StartScreen((self.width/2, 100))
+        StartScreen((self.width/2, -200))
+        Serve((self.width/2, -200))
         Paddle((50,self.height/2))
         RightPaddle((900,self.height/2))
         for i in range(round(self.height/20)):
@@ -222,8 +253,11 @@ class Pong(App):
         
         for p in self.getSpritesbyClass(RightPaddle):
             p.step()
-        
+        for s in self.getSpritesbyClass(Serve):
+            s.step()
+            
         for s in self.getSpritesbyClass(StartScreen):
+            s.scale = 0.5
             s.step()
 
         if len(self.balll) == 1:
