@@ -170,10 +170,11 @@ class StartScreen(Sprite):
         super().__init__(StartScreen.s, posistion)
         self.flash = 0
         self.on = 0
+        self.s2 = 0
         self.fxcenter = self.fycenter = 0.5
 
     def step(self):
-        if Pong.screen != 0:
+        if Pong.screen != self.s2:
             self.y = -100
         if self.flash == 35:
             if self.on == 0:
@@ -187,14 +188,15 @@ class StartScreen(Sprite):
             self.flash = 0
         self.flash += 1
 
-class Serve(Sprite):
-    s = ImageAsset("images/again.png")
+class Serve(StartScreen):
+    r = ImageAsset("images/again.png")
     def __init__(self, posistion):
-        super().__init__(Serve.s, posistion)
-        self.flash = 0
+        super().__init__(Serve.r, posistion)
+        #self.flash = 0
         self.on = 0
+        self.s2 = 2
         self.fxcenter = self.fycenter = 0.5
-
+'''
     def step(self):
         print(self.y)
         if Pong.screen != 2:
@@ -213,7 +215,7 @@ class Serve(Sprite):
             self.flash = 0
         self.flash += 1
 
-
+'''
 
 class Pong(App):
     screen = 0
