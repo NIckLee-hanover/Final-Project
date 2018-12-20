@@ -166,6 +166,7 @@ class RightPaddle(Paddle):
 
 class StartScreen(Sprite):
     s = ImageAsset("images/play.png")
+    r = ImageAsset("images/again.png")
     def __init__(self, posistion):
         super().__init__(StartScreen.s, posistion)
         self.flash = 0
@@ -189,13 +190,12 @@ class StartScreen(Sprite):
         self.flash += 1
 
 class Serve(StartScreen):
-    r = ImageAsset("images/again.png")
+    
     def __init__(self, posistion):
-        super().__init__(Serve.r, posistion)
+        super().__init__(StartScreen.r, posistion)
         #self.flash = 0
         self.on = 0
         self.s2 = 2
-        self.fxcenter = self.fycenter = 0.5
 '''
     def step(self):
         print(self.y)
