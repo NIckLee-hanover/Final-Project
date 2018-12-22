@@ -170,16 +170,11 @@ class StartScreen(Sprite):
         super().__init__(StartScreen.s, posistion)
         self.flash = 0
         self.on = 0
-        self.s2 = 0
         self.fxcenter = self.fycenter = 0.5
 
-
     def step(self):
-        if Pong.screen != self.s2:
-            self.y = -100
-
-        elif self.flash == 35:
-            if self.on == 0:
+        if self.flash == 35:
+            if self.on == 0 and Pong.screen == 0:
                 self.y = 200
                 self.x = Pong.width/2
                 self.on = 1
@@ -189,40 +184,33 @@ class StartScreen(Sprite):
 
             self.flash = 0
         self.flash += 1
-        
 
-class Serve(StartScreen):
-    s2 = 2
-    s = ImageAsset("images/again.png")
-    #pass
-    '''
+class Serve(Sprite):
+    r = ImageAsset("images/again.png")
     def __init__(self, posistion):
-        super().__init__(StartScreen.r, posistion)
-        #self.flash = 0
-        #self.on = 0
-        self.s2 = 2
-        '''
-'''
+        super().__init__(Serve.r, posistion)
+        self.fxcenter = self.fycenter = 0.5
+        self.flash = 0
+        self.on = 0
+
     def step(self):
-        print(self.y)
-        if Pong.screen != 2:
-            print(Pong.screen)
-            self.y = -100
-        elif self.flash == 35:
-            print('a')
-            if self.on == 0:
+        if self.flash == 35:
+            if self.on == 0 and Pong.screen == 2:
+                print('a')
                 self.y = 200
-                self.x = Pong.width/2
+                #self.x = Pong.width/2
                 self.on = 1
             else:
                 self.y = -100
                 self. on = 0
-
             self.flash = 0
         self.flash += 1
-
-'''
-
+class Win(Sprite):
+    
+    def __init__(self, posistion):
+        super().__init__(Win.w, posistion)
+        
+        
 class Pong(App):
     screen = 0
     p1s = 8
@@ -250,6 +238,7 @@ class Pong(App):
             self.balll.append(Ball((self.width/2, randint(100, self.height-75))))
         
     def step(self):
+        print(self.screen)
         for n in self.getSpritesbyClass(Numbers):
             n.step(self.p1s)
             
@@ -263,7 +252,7 @@ class Pong(App):
             p.step()
         
         for s in self.getSpritesbyClass(Serve):
-            s.scale = 0.6
+            s.scale = 0.5
             s.step()
             
         for s in self.getSpritesbyClass(StartScreen):
