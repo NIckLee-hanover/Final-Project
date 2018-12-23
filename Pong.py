@@ -206,9 +206,21 @@ class Serve(Sprite):
             self.flash = 0
         self.flash += 1
 class Win(Sprite):
-    
+    w = ImageAsset("images/wins.png",
+    Frame(0,0,610,80), 2, 'horizontal')
     def __init__(self, posistion):
         super().__init__(Win.w, posistion)
+        self.fxcenter = self.fycenter = 0.5
+        self.image = 0 
+    def step(self):
+        if Pong.p1s == 9:
+            self.setImage(1)
+            pass
+        elif Pong.p2s == 9:
+            self.setImage(2)
+            pass
+        else:
+            self.setImage(0)
         
         
 class Pong(App):
@@ -227,7 +239,7 @@ class Pong(App):
         StartScreen((self.width/2, -200))
         Serve((self.width/2, -200))
         Paddle((50,self.height/2))
-        RightPaddle((900,self.height/2))
+        RightPaddle((self.width-50,self.height/2))
         for i in range(round(self.height/20)):
             bg = Sprite(bg_center, (self.width/2-5, i*35))
 
