@@ -4,10 +4,18 @@ lines 4-33 copied from lvl 3 for ease.
 
 Pong.py
 Author: Nick Lee
-Credit: some level 3 snippets for sound, sprite documentation and things
+Credit: some level 3 snippets for sound, sprite documentation and things, https://fontmeme.com/pixel-fonts/ for text images, 
 Assignment: Final Project
 Write and submit a program that implements the sandbox platformer game:
 https://github.com/HHS-IntroProgramming/Platformer
+
+#//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
+        PLAYER CONTROLS:
+    Left paddle use W and S to move up and down.
+    Right paddle use ⬆ and ⬇ to move up and down.
+    
+    First person to 9 points wins!
+#//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
 """
 from ggame.timer import Timer
 from ggame import (App, Color, LineStyle, Sprite, RectangleAsset,
@@ -196,7 +204,6 @@ class Serve(Sprite):
     def step(self):
         if self.flash == 35:
             if self.on == 0 and Pong.screen == 2:
-                print('a')
                 self.y = 200
                 #self.x = Pong.width/2
                 self.on = 1
@@ -205,23 +212,23 @@ class Serve(Sprite):
                 self. on = 0
             self.flash = 0
         self.flash += 1
+
 class Win(Sprite):
     w = ImageAsset("images/wins.png",
-    Frame(0,0,610,80), 2, 'horizontal')
+    Frame(0,0,600,80), 2, 'horizontal')
     def __init__(self, posistion):
         super().__init__(Win.w, posistion)
         self.fxcenter = self.fycenter = 0.5
         self.image = 0 
     def step(self):
-        if Pong.p1s == 9:
-            self.setImage(1)
-            pass
-        elif Pong.p2s == 9:
-            self.setImage(2)
-            pass
-        else:
-            self.setImage(0)
-        
+        if Pong.p1s == 7 or Pong.p2s == 7:
+            Pong.balll.append('game over')
+            Pong.screen = 3
+            self.y = 200
+            if Pong.p1s == 7:
+                self.setImage(2)
+            else:
+                self.setImage(1)
         
 class Pong(App):
     screen = 0
@@ -238,6 +245,7 @@ class Pong(App):
         Leftnum((self.width/2+100, 100))
         StartScreen((self.width/2, -200))
         Serve((self.width/2, -200))
+        Win((self.width/2, -100))
         Paddle((50,self.height/2))
         RightPaddle((self.width-50,self.height/2))
         for i in range(round(self.height/20)):
@@ -250,7 +258,6 @@ class Pong(App):
             self.balll.append(Ball((self.width/2, randint(100, self.height-75))))
         
     def step(self):
-        print(self.screen)
         for n in self.getSpritesbyClass(Numbers):
             n.step(self.p1s)
             
@@ -270,6 +277,9 @@ class Pong(App):
         for s in self.getSpritesbyClass(StartScreen):
             s.scale = 0.5
             s.step()
+        
+        for w in self.getSpritesbyClass(Win):
+            w.step()
 
         if len(self.balll) == 1:
             for b in self.getSpritesbyClass(Ball):
