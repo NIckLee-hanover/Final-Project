@@ -224,7 +224,7 @@ class Win(Sprite):
         if Pong.p1s == 7 or Pong.p2s == 7:
             Pong.balll.append('game over')
             Pong.screen = 3
-            self.y = 200
+            self.y = 300
             if Pong.p1s == 7:
                 self.setImage(2)
             else:
