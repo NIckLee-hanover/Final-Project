@@ -54,14 +54,14 @@ class Ball(Sprite):
         self.point = Sound(self.pointasset)
         
         if round(randint(0,1)) == 1:
-            self.vx = 4
+            self.vx = 12
         else:
-            self.vx = -4
+            self.vx = -12
             
         if round(randint(0,1)) == 1:
-            self.vy = 3
+            self.vy = 4
         else:
-            self.vy = -3
+            self.vy = -4
 
     def step(self):
         self.x += self.vx
@@ -88,7 +88,7 @@ class Ball(Sprite):
         self.pcollide = self.collidingWithSprites(Paddle)
         if len(self.pcollide):
             self.pop.play()
-            self.vx = (abs(self.vx)+0.5)
+            self.vx = (abs(self.vx)+0.8)
             self.vy = randint(-3,3)
             
         self.pcollide = self.collidingWithSprites(RightPaddle)
@@ -218,10 +218,13 @@ class Win(Sprite):
     Frame(0,0,600,80), 2, 'horizontal')
     def __init__(self, posistion):
         super().__init__(Win.w, posistion)
+        self.victoryasset = SoundAsset('sounds/victory.mp3')
+        self.victory = Sound(self.victoryasset)
         self.fxcenter = self.fycenter = 0.5
         self.image = 0 
     def step(self):
         if Pong.p1s == 7 or Pong.p2s == 7:
+            self.victory.play()
             Pong.balll.append('game over')
             Pong.screen = 3
             self.y = 300
