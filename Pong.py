@@ -13,6 +13,7 @@ https://github.com/HHS-IntroProgramming/Platformer
         PLAYER CONTROLS:
     Left paddle use W and S to move up and down.
     Right paddle use ⬆ and ⬇ to move up and down.
+    Press SPACE serve the ball.
     
     First person to 9 points wins!
 #//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
@@ -54,9 +55,9 @@ class Ball(Sprite):
         self.point = Sound(self.pointasset)
         
         if round(randint(0,1)) == 1:
-            self.vx = 12
+            self.vx = 5
         else:
-            self.vx = -12
+            self.vx = -5
             
         if round(randint(0,1)) == 1:
             self.vy = 4
@@ -222,17 +223,20 @@ class Win(Sprite):
         self.victory = Sound(self.victoryasset)
         self.fxcenter = self.fycenter = 0.5
         self.image = 0 
+        self.end = 0
     def step(self):
-        if Pong.p1s == 7 or Pong.p2s == 7:
-            self.victory.play()
-            Pong.balll.append('game over')
-            Pong.screen = 3
-            self.y = 300
-            if Pong.p1s == 7:
-                self.setImage(2)
-            else:
-                self.setImage(1)
-        
+        if Pong.p1s == 9 or Pong.p2s == 9:
+            if self.end == 0:
+                self.victory.play()
+                Pong.balll.append('game over')
+                Pong.screen = 3
+                self.y = 300
+                if Pong.p1s == 7:
+                    self.setImage(2)
+                else:
+                    self.setImage(1)
+                self.end = 1
+            
 class Pong(App):
     screen = 0
     p1s = 8
