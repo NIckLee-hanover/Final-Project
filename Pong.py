@@ -219,18 +219,25 @@ class Win(Sprite):
     Frame(0,0,600,80), 2, 'horizontal')
     def __init__(self, posistion):
         super().__init__(Win.w, posistion)
-        self.victoryasset = SoundAsset('sounds/victory.mp3')
+        self.victoryasset = SoundAsset('sounds/victory2.mp3')
         self.victory = Sound(self.victoryasset)
         self.fxcenter = self.fycenter = 0.5
         self.image = 0 
         self.end = 0
+        self.flash = 0
     def step(self):
+        self.flash += 1
         if Pong.p1s == 9 or Pong.p2s == 9:
             if self.end == 0:
                 self.victory.play()
                 Pong.balll.append('game over')
                 Pong.screen = 3
-                self.y = 300
+                print(self.flash % 35)
+                if (self.flash % 35) == 0 and self.flash < 300:
+                    self.y = 300
+                else:
+                    self.y = -200
+                
                 if Pong.p1s == 7:
                     self.setImage(2)
                 else:
