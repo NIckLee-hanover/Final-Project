@@ -226,7 +226,7 @@ class Win(Sprite):
         self.end = 0
         self.flash = 0
     def step(self):
-        if Pong.p1s == 11 or Pong.p2s == 11:
+        if Pong.p1s == 5 or Pong.p2s == 5:
             if self.end == 0:
                 Pong.balll.append('game over')
                 self.end = 1
