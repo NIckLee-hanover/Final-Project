@@ -55,14 +55,14 @@ class Ball(Sprite):
         self.point = Sound(self.pointasset)
         
         if round(randint(0,1)) == 1:
-            self.vx = 5
+            self.vx = 3
         else:
-            self.vx = -5
+            self.vx = -3
             
         if round(randint(0,1)) == 1:
-            self.vy = 4
+            self.vy = 3
         else:
-            self.vy = -4
+            self.vy = -3
 
     def step(self):
         self.x += self.vx
@@ -226,7 +226,7 @@ class Win(Sprite):
         self.end = 0
         self.flash = 0
     def step(self):
-        if Pong.p1s == 9 or Pong.p2s == 9:
+        if Pong.p1s == 11 or Pong.p2s == 11:
             if self.end == 0:
                 Pong.balll.append('game over')
                 self.end = 1
